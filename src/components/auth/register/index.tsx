@@ -1,5 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material';
 import React from 'react';
+import { IPropsRegisterPage } from '../../../common/types/auth';
 
 const RegisterPage: React.FC<IPropsRegisterPage> = ({
   setEmail,
