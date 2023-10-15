@@ -9,24 +9,23 @@ import { useAppDispatch } from '../../utils/hook';
 import { login } from '../../store/slice/auth';
 import { AppErrors } from '../../common/errors';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { IAuthHandleSubmit } from '../../common/types/auth';
+import { LoginSchema, RegisterSchema } from '../../utils/yup';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [username, setUserName] = useState('');
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
-    handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
-
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(
+      location.pathname === '/login' ? LoginSchema : RegisterSchema
+    ),
+  });
   const handleSubmitForm = async (data: any) => {
     if (location.pathname === '/login') {
       const userData = {
@@ -42,13 +41,15 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       }
     } else {
       const userData = {
-        email,
-        password,
-        firstName,
-        username,
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        username: data.username,
       };
-      if (password === repeatPassword) {
+      if (data.password === data.confirmPassword) {
         try {
+          console.log(userData);
+
           const user = await instance.post('auth/register', userData);
           dispatch(login(user.data));
           navigate('/');
@@ -58,12 +59,11 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
           return e;
         }
       } else {
-        throw new Error(AppErrors.passwordDoNoMAtch);
+        throw new Error(AppErrors.PasswordDoNoMAtch);
       }
     }
   };
 
-  const location = useLocation();
   return (
     <div className="root">
       <form className="form" onSubmit={handleSubmit(handleSubmitForm)}>
@@ -81,17 +81,16 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
           {location.pathname === '/login' ? (
             <LoginPage
               navigate={navigate}
+              //@ts-ignore
               register={register}
               errors={errors}
             />
           ) : location.pathname === '/register' ? (
             <RegisterPage
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setRepeatPassword={setRepeatPassword}
-              setFirstName={setFirstName}
-              setUserName={setUserName}
               navigate={navigate}
+              //@ts-ignore
+              register={register}
+              errors={errors}
             />
           ) : null}
         </Box>
