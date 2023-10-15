@@ -1,11 +1,11 @@
 import { Button, TextField, Typography } from '@mui/material';
-import { IPropsLoginPage } from '../../../common/types/auth';
+import { IPropsLogin } from '../../../common/types/auth';
 
-const LoginPage: React.FC<IPropsLoginPage> = ({
+const LoginPage: React.FC<IPropsLogin> = ({
   navigate,
   register,
   errors,
-}: IPropsLoginPage): JSX.Element => {
+}: IPropsLogin): JSX.Element => {
   return (
     <>
       <Typography variant="h2" fontFamily="Poppins" textAlign="center">
@@ -28,9 +28,7 @@ const LoginPage: React.FC<IPropsLoginPage> = ({
         variant="outlined"
         placeholder="Введите ваш email"
         helperText={errors.email ? `${errors.email.message}` : ''}
-        {...register('email', {
-          required: 'Обязательно поле для заполнения',
-        })}
+        {...register('email')}
       />
       <TextField
         error={!!errors.password}
@@ -42,10 +40,7 @@ const LoginPage: React.FC<IPropsLoginPage> = ({
         variant="outlined"
         placeholder="Введите ваш пароль"
         helperText={errors.password ? `${errors.password.message}` : ''}
-        {...register('password', {
-          required: 'Обязательно поле для заполнения',
-          minLength: 6,
-        })}
+        {...register('password')}
       />
       <Button
         variant="contained"

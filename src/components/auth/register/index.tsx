@@ -1,15 +1,12 @@
 import { Button, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { IPropsRegisterPage } from '../../../common/types/auth';
+import { IPropsRegister } from '../../../common/types/auth';
 
-const RegisterPage: React.FC<IPropsRegisterPage> = ({
-  setEmail,
-  setPassword,
-  setRepeatPassword,
-  setFirstName,
-  setUserName,
+const RegisterPage: React.FC<IPropsRegister> = ({
   navigate,
-}: IPropsRegisterPage): JSX.Element => {
+  register,
+  errors,
+}: IPropsRegister): JSX.Element => {
   return (
     <>
       <Typography variant="h2" fontFamily="Popins" textAlign="center">
@@ -24,51 +21,58 @@ const RegisterPage: React.FC<IPropsRegisterPage> = ({
         Введите данные для регистрации
       </Typography>
       <TextField
-        id="outlined-basic"
-        margin="normal"
+        error={!!errors.name}
         fullWidth={true}
+        margin="normal"
         label="Имя"
         variant="outlined"
         placeholder="Введите ваше имя"
-        onChange={(e) => setFirstName(e.target.value)}
+        helperText={errors.name ? `${errors.name.message}` : ''}
+        {...register('firstName')}
       />
       <TextField
-        id="outlined-basic"
-        margin="normal"
+        error={!!errors.username}
         fullWidth={true}
-        label="username"
+        margin="normal"
+        label="Username"
         variant="outlined"
         placeholder="Введите ваш username"
-        onChange={(e) => setUserName(e.target.value)}
+        helperText={errors.username ? `${errors.username.message}` : ''}
+        {...register('username')}
       />
       <TextField
-        id="outlined-basic"
-        margin="normal"
+        error={!!errors.email}
         fullWidth={true}
+        margin="normal"
         label="Email"
         variant="outlined"
         placeholder="Введите ваш email"
-        onChange={(e) => setEmail(e.target.value)}
+        helperText={errors.email ? `${errors.email.message}` : ''}
+        {...register('email')}
       />
       <TextField
-        id="outlined-basic"
+        error={!!errors.password}
         type="password"
-        margin="normal"
         fullWidth={true}
+        margin="normal"
         label="Password"
         variant="outlined"
         placeholder="Введите ваш пароль"
-        onChange={(e) => setPassword(e.target.value)}
+        helperText={errors.password ? `${errors.password.message}` : ''}
+        {...register('password')}
       />
       <TextField
-        id="outlined-basic"
+        error={!!errors.confirmPassword}
         type="password"
-        margin="normal"
         fullWidth={true}
+        margin="normal"
         label="Password"
         variant="outlined"
         placeholder="Повторите ваш пароль"
-        onChange={(e) => setRepeatPassword(e.target.value)}
+        helperText={
+          errors.confirmPassword ? `${errors.confirmPassword.message}` : ''
+        }
+        {...register('confirmPassword')}
       />
       <Button
         variant="contained"
