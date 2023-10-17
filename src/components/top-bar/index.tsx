@@ -17,11 +17,15 @@ import {
   NotificationsNone,
 } from '@mui/icons-material';
 import { ColorModeContext, tokens } from '../../theme';
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { useStyles } from './styles';
 import FlexBetween from '../flex-between';
+import { ITopBarProps } from '../../common/types/typebar';
 
-const TopBarComponent = ({ isOpen, setIsOpen }: any) => {
+const TopBarComponent: FC<ITopBarProps> = ({
+  isOpen,
+  setIsOpen,
+}: ITopBarProps): JSX.Element => {
   const { user } = useAppSelector((state) => state.auth.user);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

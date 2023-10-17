@@ -1,4 +1,4 @@
-import TopBarComponent from '../top-bar';
+import TopBarComponent from '../../components/top-bar';
 
 const Home = () => {
   return (

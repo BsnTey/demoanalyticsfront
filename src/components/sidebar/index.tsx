@@ -1,7 +1,6 @@
 import {
   Box,
   Drawer,
-  Divider,
   IconButton,
   List,
   ListItem,
@@ -11,25 +10,22 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import {
-  ChevronLeftOutlined,
-  ChevronRightOutlined,
-  LogoutOutlined,
-} from '@mui/icons-material';
+import { ChevronLeftOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import FlexBetween from '../flex-between';
 import { navMenu } from '../moks/navigate';
 import { tokens } from '../../theme';
 import Logo from '../../assets/images/sidebar/logo.svg';
 import { useStyles } from './styles';
+import { ISidebarProps } from '../../common/types/sidebar';
 
-const SidebarComponent = ({
+const SidebarComponent: FC<ISidebarProps> = ({
   isNoneMibile,
   drawerWidth,
   isOpen,
-  setIsopen,
-}: any) => {
+  setIsOpen,
+}: ISidebarProps): JSX.Element => {
   const [active, setActive] = useState('');
   const classes = useStyles();
   const { pathname } = useLocation();
@@ -38,7 +34,7 @@ const SidebarComponent = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    setActive(pathname.substring(1));
+    setActive(pathname);
   }, [pathname]);
 
   const renderNavMenu = navMenu.map((item): JSX.Element => {
@@ -46,7 +42,11 @@ const SidebarComponent = ({
       <ListItem key={item.id}>
         <ListItemButton
           onClick={() => navigate(`${item.path}`)}
-          className={classes.navItem}
+          className={
+            active === item.path
+              ? `${classes.navItem} ${classes.active}`
+              : `${classes.navItem}`
+          }
         >
           <ListItemIcon>{item.icon}</ListItemIcon>
           <ListItemText>
@@ -63,7 +63,7 @@ const SidebarComponent = ({
         <Drawer
           open={isOpen}
           onClose={() => {
-            setIsopen(false);
+            setIsOpen(false);
           }}
           variant="persistent"
           anchor="left"
@@ -89,7 +89,7 @@ const SidebarComponent = ({
                 {!isNoneMibile && (
                   <IconButton
                     onClick={() => {
-                      setIsopen(!isOpen);
+                      setIsOpen(!isOpen);
                     }}
                   >
                     <ChevronLeftOutlined />
