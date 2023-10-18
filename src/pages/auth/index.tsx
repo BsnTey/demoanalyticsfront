@@ -2,14 +2,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LoginPage from './login';
 import RegisterPage from './register';
 import { Box } from '@mui/material';
-import instance from '../../utils/axios';
-import { useAppDispatch } from '../../utils/hook';
-import { login } from '../../store/slice/auth';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { AppErrors } from '../../common/errors';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema, RegisterSchema } from '../../utils/yup';
 import { useStyles } from './styles';
+import { loginUser, registerUser } from '../../store/thunk/auth';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -25,15 +24,13 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       location.pathname === '/login' ? LoginSchema : RegisterSchema
     ),
   });
+
+  const loading = useAppSelector((state) => state.auth.isLoading);
+
   const handleSubmitForm = async (data: any) => {
     if (location.pathname === '/login') {
-      const userData = {
-        email: data.email,
-        password: data.password,
-      };
       try {
-        const user = await instance.post('auth/login', userData);
-        dispatch(login(user.data));
+        await dispatch(loginUser(data));
         navigate('/');
       } catch (e) {
         return e;
@@ -47,14 +44,10 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       };
       if (data.password === data.confirmPassword) {
         try {
-          console.log(userData);
-
-          const user = await instance.post('auth/register', userData);
-          dispatch(login(user.data));
+          await dispatch(registerUser(data));
           navigate('/');
         } catch (e) {
           console.log(e);
-
           return e;
         }
       } else {
@@ -83,6 +76,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               //@ts-ignore
               register={register}
               errors={errors}
+              loading={loading}
             />
           ) : location.pathname === '/register' ? (
             <RegisterPage
@@ -90,6 +84,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               //@ts-ignore
               register={register}
               errors={errors}
+              loading={loading}
             />
           ) : null}
         </Box>

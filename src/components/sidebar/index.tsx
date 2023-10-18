@@ -57,6 +57,11 @@ const SidebarComponent: FC<ISidebarProps> = ({
     );
   });
 
+  const logout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <Box component="nav">
       {isOpen && (
@@ -106,7 +111,7 @@ const SidebarComponent: FC<ISidebarProps> = ({
                   <ListItemIcon>
                     <LogoutOutlined />
                   </ListItemIcon>
-                  <ListItemText>
+                  <ListItemText onClick={logout}>
                     <Typography>Logout</Typography>
                   </ListItemText>
                 </ListItemButton>
