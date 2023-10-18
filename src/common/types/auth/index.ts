@@ -7,7 +7,7 @@ export interface IPropsLogin<
   navigate: (to: string) => void;
   register: UseFormRegister<TFieldValues>;
   errors: FieldErrors<TFieldValues>;
-  // loading: boolean
+  loading: boolean;
 }
 
 export interface IPropsRegister<
@@ -17,7 +17,7 @@ export interface IPropsRegister<
   navigate: (to: string) => void;
   register: UseFormRegister<TFieldValues>;
   errors: FieldErrors<TFieldValues>;
-  // loading: boolean
+  loading: boolean;
 }
 
 export interface IAuthHandleSubmit {
@@ -28,16 +28,17 @@ export interface IAuthHandleSubmit {
 export interface IAuthState {
   user: IAuthBackUser;
   isLogged: boolean;
+  isLoading: boolean;
 }
 
 export interface IAuthBackUser {
-  token: string;
+  token: string | null;
   user: IPublicUser;
 }
 
 export interface IPublicUser {
   id: number | null;
-  firstName: string;
+  firstName: string | null;
   username: string;
   email: string;
   createdAt: string;
@@ -52,4 +53,16 @@ export interface IWatchList {
   createdAt: string;
   updatedAt: string;
   user: number | null;
+}
+
+export interface ILoginData {
+  email: string;
+  password: string;
+}
+
+export interface IRegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  username: string;
 }

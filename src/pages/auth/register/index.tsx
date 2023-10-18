@@ -1,13 +1,14 @@
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import React from 'react';
 import { IPropsRegister } from '../../../common/types/auth';
 import { useStyles } from './styles';
-import AppButton from '../../../components/app-button';
+import AppLoadingButton from '../../../components/loading-button';
 
 const RegisterPage: React.FC<IPropsRegister> = ({
   navigate,
   register,
   errors,
+  loading,
 }: IPropsRegister): JSX.Element => {
   const classes = useStyles();
 
@@ -73,13 +74,9 @@ const RegisterPage: React.FC<IPropsRegister> = ({
         }
         {...register('confirmPassword')}
       />
-      <AppButton
-        type="submit"
-        sx={{ marginTop: 2, marginBottom: 2, width: '60%' }}
-        variant="contained"
-      >
+      <AppLoadingButton loading={loading} type="submit" variant="contained">
         Регистрация
-      </AppButton>
+      </AppLoadingButton>
       <Typography
         variant="body1"
         sx={{

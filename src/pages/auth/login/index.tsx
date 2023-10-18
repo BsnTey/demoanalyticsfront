@@ -1,12 +1,14 @@
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { IPropsLogin } from '../../../common/types/auth';
-import AppButton from '../../../components/app-button';
 import { useStyles } from './styles';
+import AppLoadingButton from '../../../components/loading-button';
+import { LoadingButton } from '@mui/lab';
 
 const LoginPage: React.FC<IPropsLogin> = ({
   navigate,
   register,
   errors,
+  loading,
 }: IPropsLogin): JSX.Element => {
   const classes = useStyles();
 
@@ -41,13 +43,9 @@ const LoginPage: React.FC<IPropsLogin> = ({
         helperText={errors.password ? `${errors.password.message}` : ''}
         {...register('password')}
       />
-      <AppButton
-        type="submit"
-        sx={{ marginTop: 2, marginBottom: 2, width: '60%' }}
-        variant="contained"
-      >
+      <AppLoadingButton loading={loading} type="submit" variant="contained">
         Войти
-      </AppButton>
+      </AppLoadingButton>
       <Typography
         variant="body1"
         sx={{
